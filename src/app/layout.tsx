@@ -1,5 +1,10 @@
 import './globals.css'
 
+export const metadata = {
+  title: 'Akureyri Scooters',
+  description: 'Premium scooter rentals in Akureyri',
+}
+
 export default function RootLayout({
   children,
 }: {
