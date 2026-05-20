@@ -1,0 +1,241 @@
+// Customer reviews
+export const reviews = [
+  {
+    id: 1,
+    name: 'Jeff W',
+    rating: 5,
+    text: 'Great way to get around Akureyri! Very friendly people and an amazing experience.',
+    source: 'TripAdvisor',
+  },
+  {
+    id: 2,
+    name: 'Karen',
+    rating: 5,
+    text: 'Perfect for my 86 year-old mother. Highly recommend this family-run business.',
+    source: 'TripAdvisor',
+  },
+  {
+    id: 3,
+    name: 'Todd S',
+    rating: 5,
+    text: 'This was freedom. Wonderful service right by the cruise port.',
+    source: 'TripAdvisor',
+  },
+  {
+    id: 4,
+    name: 'Maria G',
+    rating: 5,
+    text: 'Excellent accessibility. Made our trip to Iceland so much easier for my parents.',
+    source: 'TripAdvisor',
+  },
+  {
+    id: 5,
+    name: 'Robert K',
+    rating: 5,
+    text: 'Best cruise excursion ever. Right location, friendly staff, perfect scooters.',
+    source: 'TripAdvisor',
+  },
+]
+
+export const reviewStats = {
+  averageRating: 5.0,
+  totalReviews: 11,
+  platform: 'TripAdvisor',
+} 
+export const translations = {
+  is: {
+    nav: {
+      home: 'Forsíða',
+      rentals: 'Leiga',
+      reviews: 'Umsagnir',
+      faq: 'Algengar spurningar',
+      contact: 'Hafa samband',
+    },
+    hero: {
+      badge: '🚢 Aðeins 50 metrum frá höfninni',
+      heading: 'Skoðaðu Akureyri',
+      subHeading: 'með þægindum',
+      description:
+        'Premium rafskutlu leiga fyrir cruise gesti og ferðamenn sem kanna Norðurland Íslands.',
+      primaryCTA: 'Bókaðu rafskutlu',
+      secondaryCTA: 'Skoðaðu leiguva',
+    },
+    trust: {
+      rating: '5.0',
+      reviews: '11+ staðfest Tripadvisor umsagnir',
+      quote: '"Þetta var frelsi."',
+      author: '— Todd S',
+    },
+    contact: {
+      title: 'Hafa samband',
+      description: 'Við erum hér til að svara spurningum og hjálpa þér að skipuleggja ferðina þína.',
+      phone: 'Sími',
+      email: 'Netfang',
+    },
+  },
+
+  en: {
+    nav: {
+      home: 'Home',
+      rentals: 'Rentals',
+      reviews: 'Reviews',
+      faq: 'FAQ',
+      contact: 'Contact',
+    },
+    hero: {
+      badge: '🚢 Only 50 meters from the cruise port',
+      heading: 'Explore Akureyri',
+      subHeading: 'With Ease',
+      description:
+        'Premium mobility scooter rentals for cruise visitors and travelers exploring North Iceland.',
+      primaryCTA: 'Book a Scooter',
+      secondaryCTA: 'View Rentals',
+    },
+    trust: {
+      rating: '5.0',
+      reviews: '11+ verified TripAdvisor reviews',
+      quote: '"This was freedom."',
+      author: '— Todd S',
+    },
+    contact: {
+      title: 'Get in Touch',
+      description: 'We are here to answer questions and help you plan your trip.',
+      phone: 'Phone',
+      email: 'Email',
+    },
+  },
+}
+import { translations } from './translations'
+
+export const getTranslation = (lang: string, key: string): any => {
+  const langTranslations =
+    translations[lang as keyof typeof translations] || translations.en
+
+  const keys = key.split('.')
+  let value: any = langTranslations
+
+  for (const k of keys) {
+    value = value?.[k]
+    if (value === undefined) return key
+  }
+
+  return value
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --color-primary-dark: #0f172a;
+  --color-primary-light: #f8f9fa;
+  --color-accent: #0284c7;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', system-ui, sans-serif;
+  background-color: var(--color-primary-light);
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        nordic: {
+          dark: '#1a2332',
+          light: '#f8f9fa',
+          accent: '#0066cc',
+          success: '#2ecc71',
+        },
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.6s ease-in-out',
+        'slide-up': 'slideUp 0.8s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+    },
+  },
+  plugins: [],
+}
+
+export default config
+import type { Metadata } from 'next'
+import './globals.css'
+
+export const metadata: Metadata = {
+  title: 'Akureyri Scooters | Premium Mobility Scooter Rental Iceland',
+  description:
+    'Rent premium mobility scooters in Akureyri, Iceland. Located steps from the cruise port.',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
