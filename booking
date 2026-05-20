@@ -1,0 +1,162 @@
+import { NextResponse } from 'next/server'
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json()
+
+    const { name, email, date, message } = body
+
+    if (!name || !email) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    // In real app: send email via Resend / Nodemailer / etc.
+    console.log('New booking request:', {
+      name,
+      email,
+      date,
+      message,
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (err) {
+    return NextResponse.json(
+      { error: 'Server error' },
+      { status: 500 }
+    )
+  }
+}
+'use client'
+
+import { useState } from 'react'
+
+const PHONE = '+3540000000'
+const EMAIL = 'info@akureyriscooters.is'
+const WHATSAPP = '+3540000000'
+
+export default function BookingSystem() {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    date: '',
+    message: '',
+  })
+
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const submitForm = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+
+    const res = await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    })
+
+    setLoading(false)
+
+    if (res.ok) {
+      setSuccess(true)
+      setForm({ name: '', email: '', date: '', message: '' })
+    }
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+
+      {/* Quick Contact Buttons */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <a
+          href={`tel:${PHONE}`}
+          className="bg-black text-white py-3 rounded-xl text-center"
+        >
+          📞 Call
+        </a>
+
+        <a
+          href={`mailto:${EMAIL}`}
+          className="bg-blue-600 text-white py-3 rounded-xl text-center"
+        >
+          ✉️ Email
+        </a>
+
+        <a
+          href={`https://wa.me/${WHATSAPP.replace('+', '')}`}
+          target="_blank"
+          className="bg-green-600 text-white py-3 rounded-xl text-center"
+        >
+          💬 WhatsApp
+        </a>
+      </div>
+
+      {/* Booking Form */}
+      <form onSubmit={submitForm} className="space-y-4">
+        <input
+          name="name"
+          placeholder="Full Name"
+          value={form.name}
+          onChange={handleChange}
+          className="w-full border p-3 rounded-xl"
+          required
+        />
+
+        <input
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="w-full border p-3 rounded-xl"
+          required
+        />
+
+        <input
+          name="date"
+          type="date"
+          value={form.date}
+          onChange={handleChange}
+          className="w-full border p-3 rounded-xl"
+        />
+
+        <textarea
+          name="message"
+          placeholder="Message (optional)"
+          value={form.message}
+          onChange={handleChange}
+          className="w-full border p-3 rounded-xl"
+          rows={4}
+        />
+
+        <button
+          disabled={loading}
+          className="w-full bg-black text-white py-3 rounded-xl"
+        >
+          {loading ? 'Sending...' : 'Send Booking Request'}
+        </button>
+
+        {success && (
+          <p className="text-green-600 text-center">
+            Booking request sent successfully!
+          </p>
+        )}
+      </form>
+    </div>
+  )
+}
+import BookingSystem from '@/components/BookingSystem'
+
+export default function ContactPage() {
+  return (
+    <main className="py-10">
+      <BookingSystem />
+    </main>
+  )
+}
